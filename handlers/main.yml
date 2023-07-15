@@ -1,0 +1,18 @@
+---
+- name: "Enable and start Docker"
+  register: docker_service_status
+  failed_when: not docker_service_status.msg
+  changed_when: not docker_service_status.msg
+  ansible.builtin.service:
+    name: "docker"
+    state: "started"
+    enabled: yes
+
+- name: "Restart Docker"
+  register: docker_service_status
+  failed_when: not docker_service_status.msg
+  changed_when: not docker_service_status.msg
+  ansible.builtin.service:
+    name: "docker"
+    state: "restarted"
+    daemon_reload: true

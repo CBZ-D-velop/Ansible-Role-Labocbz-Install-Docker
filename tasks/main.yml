@@ -1,0 +1,88 @@
+---
+- name: "Install packages"
+  ansible.builtin.package:
+    update_cache: true
+    name:
+      - cron
+
+- name: "Install Docker"
+  notify: "Enable and start Docker"
+  block:
+  - name: "Add Docker GPG apt Key"
+    ansible.builtin.apt_key:
+      url: "https://download.docker.com/linux/{{ ansible_os_family | lower }}/gpg"
+
+  - name: "Add Docker Repository"
+    ansible.builtin.apt_repository:
+      repo: "deb [arch=amd64] https://download.docker.com/linux/{{ ansible_os_family | lower }} {{ ansible_distribution_release | lower }} stable"
+
+  - name: "Update apt and install docker-ce"
+    ansible.builtin.apt:
+      update_cache: true
+      name:
+        - docker-ce
+
+- name: "Install Docker-Compose"
+  ansible.builtin.get_url:
+    url: "https://github.com/docker/compose/releases/download/v{{ docker_compose_version }}/docker-compose-{{ ansible_system }}-{{ ansible_machine }}"
+    dest: "/usr/local/bin/docker-compose"
+    mode: 'a+x'
+
+- name: "Handle some automatised Docker cleaning"
+  when: docker_create_prune_cron_job
+  block:
+    - name: "Check if a cron file exist"
+      register: cron_file
+      ansible.builtin.stat:
+        path: "/etc/cron.d/ansible_docker_clearing"
+
+    - name: "Creates a cron file under /etc/cron.d/ansible_docker_clearing"
+      when: not cron_file.stat.exists
+      ansible.builtin.cron:
+        name: "ansible - Docker prune system"
+        weekday: "{{ docker_cron_job_weekday }}"
+        minute: "{{ docker_cron_job_minute }}"
+        hour: "{{ docker_cron_job_hour }}"
+        user: "root"
+        job: "docker image prune -a --force && docker volume prune --filter all=true --force >/dev/null 2>&1"
+        cron_file: ansible_docker_clearing
+
+- name: "Add custom / insecure registries"
+  when: docker_insecure_registries is defined
+  block:
+      - name: "Check if /etc/docker exist"
+        register: docker_folder
+        ansible.builtin.stat:
+          path: "/etc/docker"
+
+      - name: "Create /etc/docker directory"
+        when: not docker_folder.stat.exists
+        ansible.builtin.file:
+          path: "/etc/docker"
+          state: directory
+          mode: 0600
+
+      - name: "Import custom dameon.json conf"
+        notify: "Restart Docker"
+        ansible.builtin.template:
+          src: "templates/daemon.json.j2"
+          dest: "/etc/docker/daemon.json"
+          mode: 0600
+
+- name: "Configure a special workaround"
+  notify: "Restart Docker"
+  when: docker_create_cron_start_at_boot and docker_restart_after_boot_time is defined
+  block:
+    - name: "Check if a cron file exist"
+      register: cron_file
+      ansible.builtin.stat:
+        path: "/etc/cron.d/ansible_start_docker_{{ docker_restart_after_boot_time }}_sec_after_boot"
+
+    - name: "Creates a cron file under /etc/cron.d (to start docker after boot in some special cases ...)"
+      when: not cron_file.stat.exists
+      ansible.builtin.cron:
+        name: "ansible - start Docker {{ docker_restart_after_boot_time }} sec after boot"
+        special_time: "reboot"
+        user: "root"
+        job: "sleep {{ docker_restart_after_boot_time }} && service ssh start"
+        cron_file: "ansible_start_docker_{{ docker_restart_after_boot_time }}_sec_after_boot"

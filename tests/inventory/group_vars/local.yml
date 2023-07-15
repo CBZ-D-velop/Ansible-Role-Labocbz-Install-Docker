@@ -1,0 +1,16 @@
+---
+
+inv_docker_cron_job_weekday: "*"
+inv_docker_cron_job_minute: "*"
+inv_docker_cron_job_hour: "*/24"
+
+inv_docker_create_prune_cron_job: true
+
+inv_docker_create_cron_start_at_boot: true
+inv_docker_restart_after_boot_time: 10
+
+inv_docker_compose_version: "2.17.2"
+
+#inv_docker_insecure_registries:
+#  - http://your.personnal.registrie:5049
+#  - http://your.personnal.registrie:5050
