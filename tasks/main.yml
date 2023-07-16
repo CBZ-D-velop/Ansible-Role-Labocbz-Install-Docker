@@ -71,7 +71,7 @@
 
 - name: "Configure a special workaround"
   notify: "Restart Docker"
-  when: (docker_create_cron_start_at_boot | default(false)) and (docker_restart_after_boot_time | default(false)))
+  when: ((docker_create_cron_start_at_boot | default(false)) and (docker_restart_after_boot_time | default(false)))
   block:
     - name: "Check if a cron file exist"
       register: cron_file
