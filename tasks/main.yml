@@ -1,10 +1,4 @@
 ---
-- name: "Install packages"
-  ansible.builtin.package:
-    update_cache: true
-    name:
-      - cron
-
 - name: "Install Docker"
   notify: "Enable and start Docker"
   block:
@@ -20,7 +14,7 @@
     ansible.builtin.apt:
       update_cache: true
       name:
-        - docker-ce
+        - "docker-ce"
 
 - name: "Install Docker-Compose"
   ansible.builtin.get_url:
@@ -29,8 +23,14 @@
     mode: 'a+x'
 
 - name: "Handle some automatised Docker cleaning"
-  when: docker_create_prune_cron_job
+  when: docker_create_prune_cron_job | default(false)
   block:
+    - name: "Install packages"
+      ansible.builtin.package:
+        update_cache: true
+        name:
+          - "cron"
+
     - name: "Check if a cron file exist"
       register: cron_file
       ansible.builtin.stat:
@@ -48,7 +48,8 @@
         cron_file: ansible_docker_clearing
 
 - name: "Add custom / insecure registries"
-  when: docker_insecure_registries is defined
+  when: docker_insecure_registries | default(false)
+  notify: "Restart Docker"
   block:
       - name: "Check if /etc/docker exist"
         register: docker_folder
@@ -60,18 +61,17 @@
         ansible.builtin.file:
           path: "/etc/docker"
           state: directory
-          mode: 0600
+          mode: "0600"
 
       - name: "Import custom dameon.json conf"
-        notify: "Restart Docker"
         ansible.builtin.template:
           src: "templates/daemon.json.j2"
           dest: "/etc/docker/daemon.json"
-          mode: 0600
+          mode: "0600"
 
 - name: "Configure a special workaround"
   notify: "Restart Docker"
-  when: docker_create_cron_start_at_boot and docker_restart_after_boot_time is defined
+  when: (docker_create_cron_start_at_boot | default(false)) and (docker_restart_after_boot_time | default(false)))
   block:
     - name: "Check if a cron file exist"
       register: cron_file

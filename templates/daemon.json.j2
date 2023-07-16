@@ -1,5 +1,5 @@
 {
-{% if docker_insecure_registries is defined %}
+{% if docker_insecure_registries | default(false) %}
 "insecure-registries": [
 {% for registry in docker_insecure_registries %}
 {% if not loop.last %}
