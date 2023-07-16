@@ -19,6 +19,18 @@
 
 An Ansible role to install and confgure Docker and docker-compose on your hosts.
 
+The Ansible role installs Docker and Docker Compose on the target system, enabling efficient container management. Docker Compose is installed by default, and administrators have the option to specify the desired Docker and Docker Compose versions.
+
+For enhanced container maintenance, the role provides the flexibility to set up a cron job for periodically pruning Docker resources. This job efficiently removes unused networks and stopped or untagged images, optimizing resource utilization.
+
+To ensure continuous availability of Docker services, the role allows configuring a cron job that restarts the Docker service after a specified time upon system boot.
+
+Moreover, for scenarios requiring the use of private or insecure registries, the role supports configuring a list of "insecure" registries. This functionality permits the use of Artifactory, Nexus, or similar registries without requiring HTTPS for communication.
+
+By deploying Docker and Docker Compose with this role, administrators can effectively manage containers and streamline container orchestration. The role's versatility in version selection, cron job scheduling for pruning and service restart, and support for insecure registries provides administrators with a powerful solution for containerized application deployment.
+
+In summary, the Docker role simplifies the installation and configuration of Docker and Docker Compose. With customizable options for version selection, cron job scheduling for pruning and service restart, and support for insecure registries, the role facilitates container management and ensures a robust and efficient container environment for applications.
+
 ## Folder structure
 
 By default Ansible will look in each directory within a role for a main.yml file for relevant content (also man.yml and main):
