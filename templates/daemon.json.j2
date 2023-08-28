@@ -1,7 +1,7 @@
 {
-{% if docker_insecure_registries | default(false) %}
+{% if install_docker_insecure_registries | default(false) %}
 "insecure-registries": [
-{% for registry in docker_insecure_registries %}
+{% for registry in install_docker_insecure_registries %}
 {% if not loop.last %}
 "{{ registry }}",
 {% else %}

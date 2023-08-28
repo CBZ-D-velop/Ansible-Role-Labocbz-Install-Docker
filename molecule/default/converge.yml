@@ -13,12 +13,13 @@
       tags:
         - "labocbz.install_docker"
       vars:
-        docker_cron_job_weekday: "{{ inv_docker_cron_job_weekday }}"
-        docker_cron_job_minute: "{{ inv_docker_cron_job_minute }}"
-        docker_cron_job_hour: "{{ inv_docker_cron_job_hour }}"
-        docker_create_prune_cron_job: "{{ inv_docker_create_prune_cron_job }}"
-        docker_create_cron_start_at_boot: "{{ inv_docker_create_cron_start_at_boot }}"
-        docker_restart_after_boot_time: "{{ inv_docker_restart_after_boot_time }}"
-        docker_compose_version: "{{ inv_docker_compose_version }}"
+        install_docker_portainer: "{{ inv_install_docker_portainer }}"
+        install_docker_portainer_http_port: "{{ inv_install_docker_portainer_http_port }}"
+        install_docker_portainer_https_port: "{{ inv_install_docker_portainer_https_port }}"
+        install_docker_portainer_agent_port: "{{ inv_install_docker_portainer_agent_port }}"
+        install_docker_portainer_container_name: "{{ inv_install_docker_portainer_container_name }}"
+        install_docker_portainer_volume_name: "{{ inv_install_docker_portainer_volume_name }}"
+        install_docker_watchtower: "{{ inv_install_docker_watchtower }}"
+        install_docker_watchtower_container_name: "{{ inv_install_docker_watchtower_container_name }}"
       ansible.builtin.include_role:
         name: "labocbz.install_docker"

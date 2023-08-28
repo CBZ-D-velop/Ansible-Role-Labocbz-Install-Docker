@@ -1,16 +1,16 @@
 ---
+inv_install_docker_compose_version: "2.17.2"
 
-inv_docker_cron_job_weekday: "*"
-inv_docker_cron_job_minute: "*"
-inv_docker_cron_job_hour: "*/24"
-
-inv_docker_create_prune_cron_job: true
-
-inv_docker_create_cron_start_at_boot: true
-inv_docker_restart_after_boot_time: 10
-
-inv_docker_compose_version: "2.17.2"
-
-#inv_docker_insecure_registries:
+#inv_install_docker_insecure_registries:
 #  - http://your.personnal.registrie:5049
 #  - http://your.personnal.registrie:5050
+
+inv_install_docker_portainer: true
+inv_install_docker_portainer_http_port: 9000
+inv_install_docker_portainer_https_port: 9443
+inv_install_docker_portainer_agent_port: 8000
+inv_install_docker_portainer_container_name: "portainer-ce"
+inv_install_docker_portainer_volume_name: "portainer_data"
+
+inv_install_docker_watchtower: true
+inv_install_docker_watchtower_container_name: "watchtower"
