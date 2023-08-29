@@ -15,17 +15,18 @@
 ![Tag: Docker](https://img.shields.io/badge/Tech-Docker-orange)
 ![Tag: Docker-ce](https://img.shields.io/badge/Tech-Docker--ce-orange)
 ![Tag: Docker-compose](https://img.shields.io/badge/Tech-Docker--compose-orange)
-![Tag: Cron](https://img.shields.io/badge/Tech-Cron-orange)
+![Tag: Portainer](https://img.shields.io/badge/Tech-Portainer-orange)
+![Tag: Watchtower](https://img.shields.io/badge/Tech-Watchtower-orange)
 
 An Ansible role to install and confgure Docker and docker-compose on your hosts.
 
 The Ansible role installs Docker and Docker Compose on the target system, enabling efficient container management. Docker Compose is installed by default, and administrators have the option to specify the desired Docker and Docker Compose versions.
 
-For enhanced container maintenance, the role provides the flexibility to set up a cron job for periodically pruning Docker resources. This job efficiently removes unused networks and stopped or untagged images, optimizing resource utilization.
+When initiating a fresh Docker installation, consider the advantages of integrating Portainer and Watchtower. Portainer offers an intuitive, graphical interface that simplifies container management, ideal for those new to Docker. Including Portainer during setup grants immediate visual control over clusters, images, and networks.
 
-To ensure continuous availability of Docker services, the role allows configuring a cron job that restarts the Docker service after a specified time upon system boot.
+Complementing this, Watchtower automates container updates. With Watchtower integrated into your Docker ecosystem, you ensure that your containers are consistently up-to-date. It monitors and installs new versions, ensuring security and optimal performance. Together, Portainer and Watchtower enhance your Docker experience by providing user-friendly management and automated updates for a seamless container journey.
 
-Moreover, for scenarios requiring the use of private or insecure registries, the role supports configuring a list of "insecure" registries. This functionality permits the use of Artifactory, Nexus, or similar registries without requiring HTTPS for communication.
+Moreover, for scenarios let you use or not of private or insecure registries, the role supports configuring a list of "insecure" registries. This functionality permits the use of Artifactory, Nexus, or similar registries without requiring HTTPS for communication.
 
 By deploying Docker and Docker Compose with this role, administrators can effectively manage containers and streamline container orchestration. The role's versatility in version selection, cron job scheduling for pruning and service restart, and support for insecure registries provides administrators with a powerful solution for containerized application deployment.
 
@@ -114,20 +115,21 @@ Some vars a required to run this role:
 
 ```YAML
 ---
-docker_cron_job_weekday: "*"
-docker_cron_job_minute: "*"
-docker_cron_job_hour: "*/24"
+install_docker_compose_version: "2.17.2"
 
-docker_create_prune_cron_job: true
-
-docker_create_cron_start_at_boot: true
-docker_restart_after_boot_time: 10
-
-docker_compose_version: "2.17.2"
-
-#docker_insecure_registries:
+#install_docker_insecure_registries:
 #  - http://your.personnal.registrie:5049
 #  - http://your.personnal.registrie:5050
+
+install_docker_portainer: true
+install_docker_portainer_http_port: 9000
+install_docker_portainer_https_port: 9443
+install_docker_portainer_agent_port: 8000
+install_docker_portainer_container_name: "portainer-ce"
+install_docker_portainer_volume_name: "portainer_data"
+
+install_docker_watchtower: true
+install_docker_watchtower_container_name: "watchtower"
 
 ```
 
@@ -140,21 +142,21 @@ In order to surchage vars, you have multiples possibilities but for mains cases 
 ```YAML
 # From inventory
 ---
+inv_install_docker_compose_version: "2.17.2"
 
-inv_docker_cron_job_weekday: "*"
-inv_docker_cron_job_minute: "*"
-inv_docker_cron_job_hour: "*/24"
+#inv_install_docker_insecure_registries:
+#  - http://your.personnal.registrie:5049
+#  - http://your.personnal.registrie:5050
 
-inv_docker_create_prune_cron_job: true
+inv_install_docker_portainer: true
+inv_install_docker_portainer_http_port: 9000
+inv_install_docker_portainer_https_port: 9443
+inv_install_docker_portainer_agent_port: 8000
+inv_install_docker_portainer_container_name: "portainer-ce"
+inv_install_docker_portainer_volume_name: "portainer_data"
 
-inv_docker_create_cron_start_at_boot: true
-inv_docker_restart_after_boot_time: 10
-
-inv_docker_compose_version: "2.17.2"
-
-inv_docker_insecure_registries:
-  - http://your.personnal.registrie:5049
-  - http://your.personnal.registrie:5050
+inv_install_docker_watchtower: true
+inv_install_docker_watchtower_container_name: "watchtower"
 
 ```
 
@@ -170,18 +172,18 @@ To run this role, you can copy the molecule/default/converge.yml playbook and ad
 
 ```YAML
 - name: "Include labocbz.install_docker"
-    tags:
+  tags:
     - "labocbz.install_docker"
-    vars:
-    docker_cron_job_weekday: "{{ inv_docker_cron_job_weekday }}"
-    docker_cron_job_minute: "{{ inv_docker_cron_job_minute }}"
-    docker_cron_job_hour: "{{ inv_docker_cron_job_hour }}"
-    docker_create_prune_cron_job: "{{ inv_docker_create_prune_cron_job }}"
-    docker_create_cron_start_at_boot: "{{ inv_docker_create_cron_start_at_boot }}"
-    docker_restart_after_boot_time: "{{ inv_docker_restart_after_boot_time }}"
-    docker_compose_version: "{{ inv_docker_compose_version }}"
-    docker_insecure_registries: "{{ inv_docker_insecure_registries }}"
-    ansible.builtin.include_role:
+  vars:
+    install_docker_portainer: "{{ inv_install_docker_portainer }}"
+    install_docker_portainer_http_port: "{{ inv_install_docker_portainer_http_port }}"
+    install_docker_portainer_https_port: "{{ inv_install_docker_portainer_https_port }}"
+    install_docker_portainer_agent_port: "{{ inv_install_docker_portainer_agent_port }}"
+    install_docker_portainer_container_name: "{{ inv_install_docker_portainer_container_name }}"
+    install_docker_portainer_volume_name: "{{ inv_install_docker_portainer_volume_name }}"
+    install_docker_watchtower: "{{ inv_install_docker_watchtower }}"
+    install_docker_watchtower_container_name: "{{ inv_install_docker_watchtower_container_name }}"
+  ansible.builtin.include_role:
     name: "labocbz.install_docker"
 ```
 
@@ -192,6 +194,13 @@ Here you can put your change to keep a trace of your work and decisions.
 ### 2023-04-27: First Init
 
 * First init of this role with the bootstrap_role playbook by Lord Robin Crombez
+
+### 2023-05-28: Portainer /  Watchtower
+
+* Role can install Portainer
+* Role can install Watchtower
+* No more "special workaround"
+* No more cron purne job
 
 ## Authors
 

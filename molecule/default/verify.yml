@@ -7,10 +7,10 @@
   tasks:
 
     - name: "Get Docker service current state"
-      register: docker_service_status
-      failed_when: not (docker_service_status.status.ActiveState == 'active' or
-        docker_service_status.status.ActiveState == 'activating' or
-        docker_service_status.status.ActiveState == 'inactive')
+      register: install_docker_service_status
+      failed_when: not (install_docker_service_status.status.ActiveState == 'active' or
+        install_docker_service_status.status.ActiveState == 'activating' or
+        install_docker_service_status.status.ActiveState == 'inactive')
       ansible.builtin.systemd:
         name: "docker"
 
@@ -21,7 +21,7 @@
       ansible.builtin.command: "docker-compose -v"
 
     - name: "Check Docker insecure registries"
-      when: inv_docker_insecure_registries is defined
+      when: inv_install_docker_insecure_registries is defined
       block:
         - name: "Check Docker registries file"
           register: file_check
@@ -30,7 +30,7 @@
             path: "/etc/docker/daemon.json"
 
         - name: "Check if insecure registries are in the /etc/docker/daemon.json file"
-          loop: "{{ inv_docker_insecure_registries }}"
+          loop: "{{ inv_install_docker_insecure_registries }}"
           loop_control:
             loop_var: registry
           register: registry_state

@@ -18,46 +18,21 @@
 
 - name: "Install Docker-Compose"
   ansible.builtin.get_url:
-    url: "https://github.com/docker/compose/releases/download/v{{ docker_compose_version }}/docker-compose-{{ ansible_system }}-{{ ansible_machine }}"
+    url: "https://github.com/docker/compose/releases/download/v{{ install_docker_compose_version }}/docker-compose-{{ ansible_system }}-{{ ansible_machine }}"
     dest: "/usr/local/bin/docker-compose"
     mode: 'a+x'
 
-- name: "Handle some automatised Docker cleaning"
-  when: docker_create_prune_cron_job | default(false)
-  block:
-    - name: "Install packages"
-      ansible.builtin.package:
-        update_cache: true
-        name:
-          - "cron"
-
-    - name: "Check if a cron file exist"
-      register: cron_file
-      ansible.builtin.stat:
-        path: "/etc/cron.d/ansible_docker_clearing"
-
-    - name: "Creates a cron file under /etc/cron.d/ansible_docker_clearing"
-      when: not cron_file.stat.exists
-      ansible.builtin.cron:
-        name: "ansible - Docker prune system"
-        weekday: "{{ docker_cron_job_weekday }}"
-        minute: "{{ docker_cron_job_minute }}"
-        hour: "{{ docker_cron_job_hour }}"
-        user: "root"
-        job: "docker image prune -a --force && docker volume prune --filter all=true --force >/dev/null 2>&1"
-        cron_file: ansible_docker_clearing
-
 - name: "Add custom / insecure registries"
-  when: docker_insecure_registries | default(false)
+  when: install_docker_insecure_registries | default(false)
   notify: "Restart Docker"
   block:
       - name: "Check if /etc/docker exist"
-        register: docker_folder
+        register: install_docker_folder
         ansible.builtin.stat:
           path: "/etc/docker"
 
       - name: "Create /etc/docker directory"
-        when: not docker_folder.stat.exists
+        when: not install_docker_folder.stat.exists
         ansible.builtin.file:
           path: "/etc/docker"
           state: directory
@@ -69,20 +44,28 @@
           dest: "/etc/docker/daemon.json"
           mode: "0600"
 
-- name: "Configure a special workaround"
-  notify: "Restart Docker"
-  when: ((docker_create_cron_start_at_boot | default(false)) and (docker_restart_after_boot_time | default(false)))
-  block:
-    - name: "Check if a cron file exist"
-      register: cron_file
-      ansible.builtin.stat:
-        path: "/etc/cron.d/ansible_start_docker_{{ docker_restart_after_boot_time }}_sec_after_boot"
+- name: "Install Portainer"
+  when: install_docker_portainer | default(false)
+  community.docker.docker_container:
+    name: "{{ install_docker_portainer_container_name }}"
+    image: "portainer/portainer-ce"
+    state: "present"
+    recreate: false
+    exposed_ports:
+      - "{{ install_docker_portainer_agent_port }}:9443"
+      - "{{ install_docker_portainer_http_port }}:9443"
+      - "{{ install_docker_portainer_https_port }}:9443"
+    volumes:
+      - "{{ install_docker_portainer_volume_name }}:/data"
+    devices:
+      - "/var/run/docker.sock:/var/run/docker.sock"
 
-    - name: "Creates a cron file under /etc/cron.d (to start docker after boot in some special cases ...)"
-      when: not cron_file.stat.exists
-      ansible.builtin.cron:
-        name: "ansible - start Docker {{ docker_restart_after_boot_time }} sec after boot"
-        special_time: "reboot"
-        user: "root"
-        job: "sleep {{ docker_restart_after_boot_time }} && service ssh start"
-        cron_file: "ansible_start_docker_{{ docker_restart_after_boot_time }}_sec_after_boot"
+- name: "Install Watchtower"
+  when: install_docker_watchtower | default(false)
+  community.docker.docker_container:
+    name: "{{ install_docker_watchtower_container_name }}"
+    image: "containrrr/watchtower"
+    state: "present"
+    recreate: false
+    devices:
+      - "/var/run/docker.sock:/var/run/docker.sock"

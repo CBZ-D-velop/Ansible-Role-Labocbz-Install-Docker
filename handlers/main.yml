@@ -1,8 +1,8 @@
 ---
 - name: "Enable and start Docker"
-  register: docker_service_status
-  failed_when: not docker_service_status.msg
-  changed_when: not docker_service_status.msg
+  register: install_docker_service_status
+  failed_when: not install_docker_service_status.msg
+  changed_when: not install_docker_service_status.msg
   ansible.builtin.service:
     name: "docker"
     state: "started"
@@ -10,9 +10,9 @@
     daemon_reload: true
 
 - name: "Restart Docker"
-  register: docker_service_status
-  failed_when: not docker_service_status.msg
-  changed_when: not docker_service_status.msg
+  register: install_docker_service_status
+  failed_when: not install_docker_service_status.msg
+  changed_when: not install_docker_service_status.msg
   ansible.builtin.service:
     name: "docker"
     state: "restarted"
