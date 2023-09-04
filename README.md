@@ -195,12 +195,16 @@ Here you can put your change to keep a trace of your work and decisions.
 
 * First init of this role with the bootstrap_role playbook by Lord Robin Crombez
 
-### 2023-05-28: Portainer /  Watchtower
+### 2023-08-28: Portainer /  Watchtower
 
 * Role can install Portainer
 * Role can install Watchtower
 * No more "special workaround"
 * No more cron purne job
+
+### 2023-09-05: Portainer SSL support
+
+* Role can now deploy Portainer with custom SSL
 
 ## Authors
 

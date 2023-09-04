@@ -19,6 +19,9 @@
         install_docker_portainer_agent_port: "{{ inv_install_docker_portainer_agent_port }}"
         install_docker_portainer_container_name: "{{ inv_install_docker_portainer_container_name }}"
         install_docker_portainer_volume_name: "{{ inv_install_docker_portainer_volume_name }}"
+        install_docker_portainer_ssl: "{{ inv_install_docker_portainer_ssl }}"
+        install_docker_portainer_ssl_volume_name: "{{ inv_install_docker_portainer_ssl_volume_name }}"
+        install_docker_portainer_ssl_key: "{{ inv_install_docker_portainer_ssl_cert }}"
         install_docker_watchtower: "{{ inv_install_docker_watchtower }}"
         install_docker_watchtower_container_name: "{{ inv_install_docker_watchtower_container_name }}"
       ansible.builtin.include_role:
