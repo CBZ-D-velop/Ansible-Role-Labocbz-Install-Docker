@@ -16,5 +16,5 @@ inv_install_docker_portainer_ssl_path: "/etc/docker/ssl/portainer"
 inv_install_docker_portainer_ssl_cert: "{{ inv_install_docker_portainer_ssl_path }}/my-portainer.domain.tld/my-portainer.domain.tld.pem.crt"
 inv_install_docker_portainer_ssl_key: "{{ inv_install_docker_portainer_ssl_path }}/my-portainer.domain.tld/my-portainer.domain.tld.pem.key"
 
-inv_install_docker_watchtower: true
+inv_install_docker_watchtower: false
 inv_install_docker_watchtower_container_name: "watchtower"
