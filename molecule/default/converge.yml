@@ -23,6 +23,10 @@
         install_docker_portainer_ssl_volume_name: "{{ inv_install_docker_portainer_ssl_volume_name }}"
         install_docker_portainer_ssl_key: "{{ inv_install_docker_portainer_ssl_cert }}"
         install_docker_watchtower: "{{ inv_install_docker_watchtower }}"
-        install_docker_watchtower_container_name: "{{ inv_install_docker_watchtower_container_name }}"
+        install_docker_watchtower_poll_interval: "{{ inv_install_docker_watchtower_poll_interval }}"
+        install_docker_watchtower_cleanup: "{{ inv_install_docker_watchtower_cleanup }}"
+        install_docker_watchtower_include_restarting: "{{ inv_install_docker_watchtower_include_restarting }}"
+        install_docker_watchtower_include_stopped: "{{ inv_install_docker_watchtower_include_stopped }}"
+        install_docker_watchtower_no_restart: "{{ inv_install_docker_watchtower_no_restart }}"
       ansible.builtin.include_role:
         name: "labocbz.install_docker"

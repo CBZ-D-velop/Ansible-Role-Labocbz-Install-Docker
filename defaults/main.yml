@@ -18,3 +18,8 @@ install_docker_portainer_ssl_key: "{{ install_docker_portainer_ssl_path }}/mykey
 
 install_docker_watchtower: true
 install_docker_watchtower_container_name: "watchtower"
+install_docker_watchtower_poll_interval: 3600
+install_docker_watchtower_cleanup: true
+install_docker_watchtower_include_restarting: true
+install_docker_watchtower_include_stopped: true
+install_docker_watchtower_no_restart: true

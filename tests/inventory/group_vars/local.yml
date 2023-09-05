@@ -18,3 +18,8 @@ inv_install_docker_portainer_ssl_key: "{{ inv_install_docker_portainer_ssl_path 
 
 inv_install_docker_watchtower: false
 inv_install_docker_watchtower_container_name: "watchtower"
+inv_install_docker_watchtower_poll_interval: 3600
+inv_install_docker_watchtower_cleanup: true
+inv_install_docker_watchtower_include_restarting: true
+inv_install_docker_watchtower_include_stopped: true
+inv_install_docker_watchtower_no_restart: true
