@@ -44,13 +44,14 @@
           dest: "/etc/docker/daemon.json"
           mode: "0600"
 
-- name: "Install Portainer"
-  when: install_docker_portainer | default(false)
+- name: "Install Portainer (no SSL)"
+  when: (install_docker_portainer | default(false)) and not (install_docker_portainer_ssl | default(false))
   community.docker.docker_container:
     name: "{{ install_docker_portainer_container_name }}"
     image: "portainer/portainer-ce"
     state: "present"
     recreate: false
+    restart_policy: "always"
     exposed_ports:
       - "{{ install_docker_portainer_agent_port }}:9443"
       - "{{ install_docker_portainer_http_port }}:9443"
@@ -60,6 +61,27 @@
     devices:
       - "/var/run/docker.sock:/var/run/docker.sock"
 
+- name: "Install Portainer (SSL)"
+  when: (install_docker_portainer | default(false)) and (install_docker_portainer_ssl | default(false))
+  community.docker.docker_container:
+    name: "{{ install_docker_portainer_container_name }}"
+    image: "portainer/portainer-ce"
+    state: "present"
+    recreate: false
+    restart_policy: "always"
+    exposed_ports:
+      - "{{ install_docker_portainer_agent_port }}:9443"
+      - "{{ install_docker_portainer_http_port }}:9443"
+      - "{{ install_docker_portainer_https_port }}:9443"
+    volumes:
+      - "{{ install_docker_portainer_volume_name }}:/data"
+    devices:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "{{ inv_install_docker_portainer_ssl_path }}:/certs"
+    env:
+      sslcert: "{{ install_docker_portainer_ssl_cert }}"
+      sslkey: "{{ install_docker_portainer_ssl_key }}"
+
 - name: "Install Watchtower"
   when: install_docker_watchtower | default(false)
   community.docker.docker_container:
@@ -67,5 +89,12 @@
     image: "containrrr/watchtower"
     state: "present"
     recreate: false
+    restart_policy: "always"
     devices:
       - "/var/run/docker.sock:/var/run/docker.sock"
+    env:
+      WATCHTOWER_POLL_INTERVAL: "{{ install_docker_watchtower_poll_interval }}"
+      WATCHTOWER_CLEANUP: "{{ install_docker_watchtower_cleanup }}"
+      WATCHTOWER_INCLUDE_RESTARTING: "{{ install_docker_watchtower_include_restarting }}"
+      WATCHTOWER_INCLUDE_STOPPED: "{{ install_docker_watchtower_include_stopped }}"
+      WATCHTOWER_NO_RESTART: "{{ install_docker_watchtower_no_restart }}"

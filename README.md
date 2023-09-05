@@ -127,9 +127,18 @@ install_docker_portainer_https_port: 9443
 install_docker_portainer_agent_port: 8000
 install_docker_portainer_container_name: "portainer-ce"
 install_docker_portainer_volume_name: "portainer_data"
+install_docker_portainer_ssl: true
+install_docker_portainer_ssl_path: "/etc/certs"
+install_docker_portainer_ssl_cert: "{{ install_docker_portainer_ssl_path }}/mycert.crt"
+install_docker_portainer_ssl_key: "{{ install_docker_portainer_ssl_path }}/mykey.key"
 
 install_docker_watchtower: true
 install_docker_watchtower_container_name: "watchtower"
+install_docker_watchtower_poll_interval: 3600
+install_docker_watchtower_cleanup: true
+install_docker_watchtower_include_restarting: true
+install_docker_watchtower_include_stopped: true
+install_docker_watchtower_no_restart: true
 
 ```
 
@@ -149,14 +158,23 @@ inv_install_docker_compose_version: "2.17.2"
 #  - http://your.personnal.registrie:5050
 
 inv_install_docker_portainer: true
-inv_install_docker_portainer_http_port: 9000
-inv_install_docker_portainer_https_port: 9443
-inv_install_docker_portainer_agent_port: 8000
+inv_install_docker_portainer_http_port: 9001
+inv_install_docker_portainer_https_port: 9444
+inv_install_docker_portainer_agent_port: 8001
 inv_install_docker_portainer_container_name: "portainer-ce"
 inv_install_docker_portainer_volume_name: "portainer_data"
+inv_install_docker_portainer_ssl: true
+inv_install_docker_portainer_ssl_path: "/etc/docker/ssl/portainer"
+inv_install_docker_portainer_ssl_cert: "{{ inv_install_docker_portainer_ssl_path }}/my-portainer.domain.tld/my-portainer.domain.tld.pem.crt"
+inv_install_docker_portainer_ssl_key: "{{ inv_install_docker_portainer_ssl_path }}/my-portainer.domain.tld/my-portainer.domain.tld.pem.key"
 
-inv_install_docker_watchtower: true
+inv_install_docker_watchtower: false
 inv_install_docker_watchtower_container_name: "watchtower"
+inv_install_docker_watchtower_poll_interval: 3600
+inv_install_docker_watchtower_cleanup: true
+inv_install_docker_watchtower_include_restarting: true
+inv_install_docker_watchtower_include_stopped: true
+inv_install_docker_watchtower_no_restart: true
 
 ```
 
@@ -181,8 +199,15 @@ To run this role, you can copy the molecule/default/converge.yml playbook and ad
     install_docker_portainer_agent_port: "{{ inv_install_docker_portainer_agent_port }}"
     install_docker_portainer_container_name: "{{ inv_install_docker_portainer_container_name }}"
     install_docker_portainer_volume_name: "{{ inv_install_docker_portainer_volume_name }}"
+    install_docker_portainer_ssl: "{{ inv_install_docker_portainer_ssl }}"
+    install_docker_portainer_ssl_volume_name: "{{ inv_install_docker_portainer_ssl_volume_name }}"
+    install_docker_portainer_ssl_key: "{{ inv_install_docker_portainer_ssl_cert }}"
     install_docker_watchtower: "{{ inv_install_docker_watchtower }}"
-    install_docker_watchtower_container_name: "{{ inv_install_docker_watchtower_container_name }}"
+    install_docker_watchtower_poll_interval: "{{ inv_install_docker_watchtower_poll_interval }}"
+    install_docker_watchtower_cleanup: "{{ inv_install_docker_watchtower_cleanup }}"
+    install_docker_watchtower_include_restarting: "{{ inv_install_docker_watchtower_include_restarting }}"
+    install_docker_watchtower_include_stopped: "{{ inv_install_docker_watchtower_include_stopped }}"
+    install_docker_watchtower_no_restart: "{{ inv_install_docker_watchtower_no_restart }}"
   ansible.builtin.include_role:
     name: "labocbz.install_docker"
 ```
@@ -195,12 +220,20 @@ Here you can put your change to keep a trace of your work and decisions.
 
 * First init of this role with the bootstrap_role playbook by Lord Robin Crombez
 
-### 2023-05-28: Portainer /  Watchtower
+### 2023-08-28: Portainer / Watchtower
 
 * Role can install Portainer
 * Role can install Watchtower
 * No more "special workaround"
 * No more cron purne job
+
+### 2023-09-05: Portainer SSL support
+
+* Role can now deploy Portainer with custom SSL
+
+### 2023-09-05b: Watchtower env support
+
+* You can now set some env vars for Watchtower like poll interval or cleanup
 
 ## Authors
 
