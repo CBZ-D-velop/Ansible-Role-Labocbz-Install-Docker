@@ -125,6 +125,7 @@ install_docker_portainer: true
 install_docker_portainer_http_port: 9000
 install_docker_portainer_https_port: 9443
 install_docker_portainer_agent_port: 8000
+install_docker_portainer_address: "0.0.0.0"
 install_docker_portainer_container_name: "portainer-ce"
 install_docker_portainer_volume_name: "portainer_data"
 install_docker_portainer_ssl: true
@@ -161,6 +162,7 @@ inv_install_docker_portainer: true
 inv_install_docker_portainer_http_port: 9001
 inv_install_docker_portainer_https_port: 9444
 inv_install_docker_portainer_agent_port: 8001
+inv_install_docker_portainer_address: "127.0.0.1"
 inv_install_docker_portainer_container_name: "portainer-ce"
 inv_install_docker_portainer_volume_name: "portainer_data"
 inv_install_docker_portainer_ssl: true
@@ -208,6 +210,7 @@ To run this role, you can copy the molecule/default/converge.yml playbook and ad
     install_docker_watchtower_include_restarting: "{{ inv_install_docker_watchtower_include_restarting }}"
     install_docker_watchtower_include_stopped: "{{ inv_install_docker_watchtower_include_stopped }}"
     install_docker_watchtower_no_restart: "{{ inv_install_docker_watchtower_no_restart }}"
+    install_docker_portainer_address: "{{ inv_install_docker_portainer_address }}"
   ansible.builtin.include_role:
     name: "labocbz.install_docker"
 ```
@@ -234,6 +237,11 @@ Here you can put your change to keep a trace of your work and decisions.
 ### 2023-09-05b: Watchtower env support
 
 * You can now set some env vars for Watchtower like poll interval or cleanup
+
+### 2023-09-27: Fix expose port and volumes
+
+* Role can now start containers
+* Role allow yo to expose Portainer on localhost if you want any reverse proxy
 
 ## Authors
 
