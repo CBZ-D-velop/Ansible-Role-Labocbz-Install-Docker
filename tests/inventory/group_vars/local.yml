@@ -9,6 +9,7 @@ inv_install_docker_portainer: true
 inv_install_docker_portainer_http_port: 9001
 inv_install_docker_portainer_https_port: 9444
 inv_install_docker_portainer_agent_port: 8001
+inv_install_docker_portainer_address: "127.0.0.1"
 inv_install_docker_portainer_container_name: "portainer-ce"
 inv_install_docker_portainer_volume_name: "portainer_data"
 inv_install_docker_portainer_ssl: true
