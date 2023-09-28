@@ -52,13 +52,12 @@
     state: "present"
     recreate: false
     restart_policy: "always"
-    exposed_ports:
-      - "{{ install_docker_portainer_agent_port }}:9443"
-      - "{{ install_docker_portainer_http_port }}:9443"
-      - "{{ install_docker_portainer_https_port }}:9443"
+    ports:
+      - "{{ install_docker_portainer_address }}:{{ install_docker_portainer_http_port }}:9000"
+      - "{{ install_docker_portainer_address }}:{{ install_docker_portainer_https_port }}:9443"
+      - "{{ install_docker_portainer_address }}:{{ install_docker_portainer_agent_port }}:8000"
     volumes:
       - "{{ install_docker_portainer_volume_name }}:/data"
-    devices:
       - "/var/run/docker.sock:/var/run/docker.sock"
 
 - name: "Install Portainer (SSL)"
