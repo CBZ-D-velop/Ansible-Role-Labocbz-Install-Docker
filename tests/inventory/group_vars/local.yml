@@ -5,7 +5,7 @@ inv_install_docker_compose_version: "2.17.2"
 #  - http://your.personnal.registrie:5049
 #  - http://your.personnal.registrie:5050
 
-inv_install_docker_portainer: true
+inv_install_docker_portainer: false
 inv_install_docker_portainer_http_port: 9001
 inv_install_docker_portainer_https_port: 9444
 inv_install_docker_portainer_agent_port: 8001
