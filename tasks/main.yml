@@ -12,7 +12,7 @@
 
   - name: "Update apt and install docker-ce"
     ansible.builtin.apt:
-      update_cache: true
+      update_cache: false
       name:
         - "docker-ce"
 
