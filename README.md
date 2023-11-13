@@ -250,6 +250,10 @@ Here you can put your change to keep a trace of your work and decisions.
 * Molecule now use custom Docker image in CI/CD by env vars
 * New CICD with needs and optimization
 
+### 2023-11-13: Agent port
+
+* Role bind agent port on 0.0.0, so bind on 127.0.0.1 is now possible for security
+
 ## Authors
 
 * Lord Robin Crombez
