@@ -252,7 +252,7 @@ Here you can put your change to keep a trace of your work and decisions.
 
 ### 2023-11-13: Agent port
 
-* Role bind agent port on 0.0.0, so bind on 127.0.0.1 is now possible for security
+* Role bind agent port on 0.0.0.0, so bind on 127.0.0.1 is now possible for security
 
 ## Authors
 
