@@ -96,3 +96,37 @@
       WATCHTOWER_INCLUDE_RESTARTING: "{{ install_docker_watchtower_include_restarting }}"
       WATCHTOWER_INCLUDE_STOPPED: "{{ install_docker_watchtower_include_stopped }}"
       WATCHTOWER_NO_RESTART: "{{ install_docker_watchtower_no_restart }}"
+
+    - name: "Handler Docker clean"
+      when: install_docker_handle_clean | default(false)
+      block:
+        - name: "Set facts for cleaning jon"
+          ansible.builtin.set_fact:
+            var_handle_docker_clean_cron_file: "{{ inv_handle_docker_clean_cron_file | default('ansible_docker_system_prune') }}"
+            var_handle_docker_clean_weekday: "{{ inv_handle_docker_clean_weekday | default('*') }}"
+            var_handle_docker_clean_minute: "{{ inv_handle_docker_clean_minute | default('0') }}"
+            var_handle_docker_clean_hour: "{{ inv_handle_docker_clean_hour | default('*/6') }}"
+
+        - name: "Create a cron file under /etc/cron.d"
+          ansible.builtin.cron:
+            cron_file: "{{ var_handle_docker_clean_cron_file }}"
+            name: "Docker System Prune"
+            weekday: "{{ var_handle_docker_clean_weekday }}"
+            minute: "{{ var_handle_docker_clean_minute }}"
+            hour: "{{ var_handle_docker_clean_hour }}"
+            user: root
+            job: "docker system prune --all --volumes --force && docker volume prune --all --force"
+            state: present
+
+    - name: "Handler Docker No clean"
+      when: not (inv_handle_docker_clean | default(false))
+      block:
+        - name: "Set facts for cleaning jon"
+          ansible.builtin.set_fact:
+            var_handle_docker_clean_cron_file: "{{ inv_handle_docker_clean_cron_file | default('ansible_docker_system_prune') }}"
+
+        - name: "Remove a cron file under /etc/cron.d"
+          ansible.builtin.cron:
+            cron_file: "{{ var_handle_docker_clean_cron_file }}"
+            name: "Docker System Prune"
+            state: absent

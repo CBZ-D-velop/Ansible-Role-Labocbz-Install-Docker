@@ -29,5 +29,10 @@
         install_docker_watchtower_include_stopped: "{{ inv_install_docker_watchtower_include_stopped }}"
         install_docker_watchtower_no_restart: "{{ inv_install_docker_watchtower_no_restart }}"
         install_docker_portainer_address: "{{ inv_install_docker_portainer_address }}"
+        install_docker_handle_clean: "{{ inv_install_docker_handle_clean }}"
+        install_docker_clean_cron_file: "{{ inv_install_docker_clean_cron_file }}"
+        install_docker_clean_weekday: "{{ inv_install_docker_clean_weekday }}"
+        install_docker_clean_minute: "{{ inv_install_docker_clean_minute }}"
+        install_docker_clean_hour: "{{ inv_install_docker_clean_hour }}"
       ansible.builtin.include_role:
         name: "labocbz.install_docker"

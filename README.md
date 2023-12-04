@@ -141,6 +141,13 @@ install_docker_watchtower_include_restarting: true
 install_docker_watchtower_include_stopped: true
 install_docker_watchtower_no_restart: true
 
+install_docker_handle_clean: true
+
+install_docker_clean_cron_file: "ansible_docker_system_prune"
+install_docker_clean_weekday: "*"
+install_docker_clean_minute: "*"
+install_docker_clean_hour: "*/8"
+
 ```
 
 The best way is to modify these vars by copy the ./default/main.yml file into the ./vars and edit with your personnals requirements.
@@ -178,6 +185,12 @@ inv_install_docker_watchtower_include_restarting: true
 inv_install_docker_watchtower_include_stopped: true
 inv_install_docker_watchtower_no_restart: true
 
+inv_install_docker_handle_clean: true
+
+inv_install_docker_clean_cron_file: "ansible_docker_system_prune"
+inv_install_docker_clean_weekday: "*"
+inv_install_docker_clean_minute: "*"
+inv_install_docker_clean_hour: "*/8"
 ```
 
 ```YAML
@@ -211,6 +224,11 @@ To run this role, you can copy the molecule/default/converge.yml playbook and ad
     install_docker_watchtower_include_stopped: "{{ inv_install_docker_watchtower_include_stopped }}"
     install_docker_watchtower_no_restart: "{{ inv_install_docker_watchtower_no_restart }}"
     install_docker_portainer_address: "{{ inv_install_docker_portainer_address }}"
+    install_docker_handle_clean: "{{ inv_install_docker_handle_clean }}"
+    install_docker_clean_cron_file: "{{ inv_install_docker_clean_cron_file }}"
+    install_docker_clean_weekday: "{{ inv_install_docker_clean_weekday }}"
+    install_docker_clean_minute: "{{ inv_install_docker_clean_minute }}"
+    install_docker_clean_hour: "{{ inv_install_docker_clean_hour }}"
   ansible.builtin.include_role:
     name: "labocbz.install_docker"
 ```
@@ -253,6 +271,10 @@ Here you can put your change to keep a trace of your work and decisions.
 ### 2023-11-13: Agent port
 
 * Role bind agent port on 0.0.0.0, so bind on 127.0.0.1 is now possible for security
+
+### 2023-12-04: Docker cleaning
+
+* Role can now create / remove cron task to clean / purge the unused objects
 
 ## Authors
 
