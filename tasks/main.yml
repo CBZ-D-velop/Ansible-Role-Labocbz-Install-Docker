@@ -100,7 +100,7 @@
 - name: "Handler Docker clean"
   when: install_docker_handle_clean | default(false)
   block:
-    - name: "Set facts for cleaning jon"
+    - name: "Set facts for cleaning job"
       ansible.builtin.set_fact:
         var_handle_docker_clean_cron_file: "{{ inv_handle_docker_clean_cron_file | default('ansible_docker_system_prune') }}"
         var_handle_docker_clean_weekday: "{{ inv_handle_docker_clean_weekday | default('*') }}"
@@ -119,9 +119,9 @@
         state: present
 
 - name: "Handler Docker No clean"
-  when: not (inv_handle_docker_clean | default(false))
+  when: not (install_docker_handle_clean | default(false))
   block:
-    - name: "Set facts for cleaning jon"
+    - name: "Set facts for cleaning job"
       ansible.builtin.set_fact:
         var_handle_docker_clean_cron_file: "{{ inv_handle_docker_clean_cron_file | default('ansible_docker_system_prune') }}"
 
