@@ -114,7 +114,7 @@
         weekday: "{{ var_handle_docker_clean_weekday }}"
         minute: "{{ var_handle_docker_clean_minute }}"
         hour: "{{ var_handle_docker_clean_hour }}"
-        user: root
+        user: "root"
         job: "docker system prune --all --volumes --force && docker volume prune --all --force"
         state: present
 
