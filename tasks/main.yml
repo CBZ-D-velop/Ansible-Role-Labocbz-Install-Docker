@@ -115,7 +115,7 @@
         minute: "{{ var_handle_docker_clean_minute }}"
         hour: "{{ var_handle_docker_clean_hour }}"
         user: "root"
-        job: "docker system prune --all --volumes --force && docker volume prune --all --force"
+        job: "docker system prune --all --volumes --force && docker volume prune --all --force > /dev/null 2>&1 > /dev/null 2>&1"
         state: present
 
 - name: "Handler Docker No clean"
