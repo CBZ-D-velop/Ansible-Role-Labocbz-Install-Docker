@@ -1,4 +1,26 @@
 ---
+- name: "Add custom / insecure registries"
+  when: install_docker_insecure_registries | default(false)
+  notify: "Restart Docker"
+  block:
+      - name: "Check if /etc/docker exist"
+        register: install_docker_folder
+        ansible.builtin.stat:
+          path: "/etc/docker"
+
+      - name: "Create /etc/docker directory"
+        when: not install_docker_folder.stat.exists
+        ansible.builtin.file:
+          path: "/etc/docker"
+          state: directory
+          mode: "0600"
+
+      - name: "Import custom dameon.json conf"
+        ansible.builtin.template:
+          src: "templates/daemon.json.j2"
+          dest: "/etc/docker/daemon.json"
+          mode: "0600"
+
 - name: "Install Docker"
   notify: "Enable and start Docker"
   block:
@@ -21,28 +43,6 @@
     url: "https://github.com/docker/compose/releases/download/v{{ install_docker_compose_version }}/docker-compose-{{ ansible_system }}-{{ ansible_machine }}"
     dest: "/usr/local/bin/docker-compose"
     mode: 'a+x'
-
-- name: "Add custom / insecure registries"
-  when: install_docker_insecure_registries | default(false)
-  notify: "Restart Docker"
-  block:
-      - name: "Check if /etc/docker exist"
-        register: install_docker_folder
-        ansible.builtin.stat:
-          path: "/etc/docker"
-
-      - name: "Create /etc/docker directory"
-        when: not install_docker_folder.stat.exists
-        ansible.builtin.file:
-          path: "/etc/docker"
-          state: directory
-          mode: "0600"
-
-      - name: "Import custom dameon.json conf"
-        ansible.builtin.template:
-          src: "templates/daemon.json.j2"
-          dest: "/etc/docker/daemon.json"
-          mode: "0600"
 
 - name: "Install Portainer (no SSL)"
   when: (install_docker_portainer | default(false)) and not (install_docker_portainer_ssl | default(false))
