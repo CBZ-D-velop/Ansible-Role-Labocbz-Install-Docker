@@ -274,6 +274,10 @@ Here you can put your change to keep a trace of your work and decisions.
 
 * Role can now create / remove cron task to clean / purge the unused objects
 
+### 2023-12-29: Daemon.json
+
+* Daemon file created before install so Docker daemon start with correct params directly
+
 ## Authors
 
 * Lord Robin Crombez
