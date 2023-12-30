@@ -155,6 +155,7 @@
       changed_when: ouput.rc != 0
       ansible.builtin.command: "swapon -a"
 
+    - name: "Remove cron task for SWAP disabling"
       ansible.builtin.cron:
         cron_file: "ansible_disable_swap_after_boot"
         name: "Disable SWAP at boot"
