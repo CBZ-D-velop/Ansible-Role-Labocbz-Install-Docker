@@ -117,6 +117,8 @@ Some vars a required to run this role:
 ---
 install_docker_compose_version: "2.17.2"
 
+install_docker_disable_swap: false
+
 #install_docker_insecure_registries:
 #  - http://your.personnal.registrie:5049
 #  - http://your.personnal.registrie:5050
@@ -159,6 +161,8 @@ In order to surchage vars, you have multiples possibilities but for mains cases 
 # From inventory
 ---
 inv_install_docker_compose_version: "2.17.2"
+
+inv_install_docker_disable_swap: true
 
 #inv_install_docker_insecure_registries:
 #  - http://your.personnal.registrie:5049
@@ -227,6 +231,7 @@ To run this role, you can copy the molecule/default/converge.yml playbook and ad
     install_docker_clean_weekday: "{{ inv_install_docker_clean_weekday }}"
     install_docker_clean_minute: "{{ inv_install_docker_clean_minute }}"
     install_docker_clean_hour: "{{ inv_install_docker_clean_hour }}"
+    install_docker_disable_swap: "{{ inv_install_docker_disable_swap }}
   ansible.builtin.include_role:
     name: "labocbz.install_docker"
 ```
@@ -277,6 +282,11 @@ Here you can put your change to keep a trace of your work and decisions.
 ### 2023-12-29: Daemon.json
 
 * Daemon file created before install so Docker daemon start with correct params directly
+
+### 2023-12-30: SWAP
+
+* You can now disable your SWAP or enable it with this role
+* SWAP disabing is based on cron task at boot
 
 ## Authors
 

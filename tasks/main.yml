@@ -130,3 +130,32 @@
         cron_file: "{{ var_handle_docker_clean_cron_file }}"
         name: "Docker System Prune"
         state: absent
+
+- name: "Disable SWAP and add cron"
+  when: install_docker_disable_swap | default(false)
+  block:
+    - name: "Disable SWAP"
+      register: ouput
+      changed_when: ouput.rc != 0
+      ansible.builtin.command: "swapoff -a"
+
+    - name: "Create cron task for SWAP disabling"
+      ansible.builtin.cron:
+        name: "Disable SWAP at boot"
+        special_time: "reboot"
+        user: "root"
+        job: "swapoff -a"
+        cron_file: "ansible_disable_swap_after_boot"
+
+- name: "Enable SWAP and remove cron"
+  when: not (install_docker_disable_swap | default(false))
+  block:
+    - name: "Enable SWAP"
+      register: ouput
+      changed_when: ouput.rc != 0
+      ansible.builtin.command: "swapon -a"
+
+      ansible.builtin.cron:
+        cron_file: "ansible_disable_swap_after_boot"
+        name: "Disable SWAP at boot"
+        state: absent
