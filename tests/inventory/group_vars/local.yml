@@ -1,6 +1,8 @@
 ---
 inv_install_docker_compose_version: "2.17.2"
 
+inv_install_docker_disable_swap: true
+
 #inv_install_docker_insecure_registries:
 #  - http://your.personnal.registrie:5049
 #  - http://your.personnal.registrie:5050
