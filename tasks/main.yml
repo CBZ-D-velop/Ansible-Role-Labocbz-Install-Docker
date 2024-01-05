@@ -137,6 +137,7 @@
     - name: "Disable SWAP"
       register: ouput
       changed_when: ouput.rc != 0
+      ignore_errors: true
       ansible.builtin.command: "swapoff -a"
 
     - name: "Create cron task for SWAP disabling"
