@@ -132,7 +132,7 @@
         state: absent
 
 - name: "Disable SWAP and add cron"
-  when: install_docker_disable_swap | default(false)
+  when: install_docker_disable_swap | default(true)
   block:
     - name: "Disable SWAP"
       register: ouput
@@ -149,7 +149,7 @@
         cron_file: "ansible_disable_swap_after_boot"
 
 - name: "Enable SWAP and remove cron"
-  when: not (install_docker_disable_swap | default(false))
+  when: not (install_docker_disable_swap | default(true))
   block:
     - name: "Enable SWAP"
       register: ouput
