@@ -36,16 +36,18 @@
           changed_when: registry_state.rc != 0
           ansible.builtin.command: "grep -q {{ registry }} /etc/docker/daemon.json"
 
-    - name: "Remove container from all networks: Portainer"
-      when: inv_install_docker__portainer | default(false)
-      docker_container:
-        name: "{{ inv_install_docker__portainer_container_name }}"
-        purge_networks: yes
-        state: absent
+    - name: "Check Portainer HTTP URL"
+      when: (inv_install_docker__portainer | default(false))
+      register: result
+      failed_when: result.status != 200
+      ansible.builtin.uri:
+        url: "http://127.0.0.1:{{ inv_install_docker__portainer_http_port }}/"
+        method: "GET"
 
-    - name: "Remove container from all networks: Watchtower"
-      when: inv_install_docker__watchtower | default(false)
-      docker_container:
-        name: "{{ inv_install_docker__watchtower_container_name }}"
-        purge_networks: yes
-        state: absent
+    - name: "Check Portainer HTTPS URL"
+      when: (inv_install_docker__portainer | default(false)) and (inv_install_docker__portainer_ssl | default(false))
+      register: result
+      failed_when: result.status != 200
+      ansible.builtin.uri:
+        url: "https://127.0.0.1:{{ inv_install_docker__portainer_https_port }}/"
+        method: "GET"
