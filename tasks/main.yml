@@ -50,7 +50,7 @@
   community.docker.docker_container:
     name: "{{ install_docker__portainer_container_name }}"
     image: "portainer/portainer-ce"
-    state: "present"
+    state: "started"
     recreate: false
     restart_policy: "always"
     ports:

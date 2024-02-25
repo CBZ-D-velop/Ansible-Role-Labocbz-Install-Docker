@@ -14,7 +14,7 @@ inv_install_docker__portainer_agent_port: 8000
 inv_install_docker__portainer_address: "127.0.0.1"
 inv_install_docker__portainer_container_name: "portainer-ce"
 inv_install_docker__portainer_volume_name: "portainer_data"
-inv_install_docker__portainer_ssl: false
+inv_install_docker__portainer_ssl: true
 inv_install_docker__portainer_ssl_path: "/etc/docker/ssl/portainer"
 inv_install_docker__portainer_ssl_cert: "{{ inv_install_docker__portainer_ssl_path }}/my-portainer-server.domain.tld/my-portainer-server.domain.tld.pem.crt"
 inv_install_docker__portainer_ssl_key: "{{ inv_install_docker__portainer_ssl_path }}/my-portainer-server.domain.tld/my-portainer-server.domain.tld.pem.key"
