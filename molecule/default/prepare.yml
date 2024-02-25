@@ -1,27 +1,27 @@
 ---
 # if you have any prepararion task
 - name: "Prepare"
-  hosts: "all"
+  hosts: "local"
   gather_facts: true
   tasks:
 
     - name: "Include cryptographic content var file"
       ansible.builtin.include_vars: "../../tests/certs/main.yml"
 
-    - name: "Include labocbz.prepare_host"
-      tags:
-        - "labocbz.prepare_host"
-      ansible.builtin.include_role:
-        name: "labocbz.prepare_host"
+    #- name: "Include labocbz.prepare_host"
+    #  tags:
+    #    - "labocbz.prepare_host"
+    #  ansible.builtin.include_role:
+    #    name: "labocbz.prepare_host"
 
     - name: "Gather facts from all hosts"
       delegate_to: "{{ item }}"
       delegate_facts: true
-      loop: "{{ groups['all'] }}"
+      loop: "{{ groups['local'] }}"
       ansible.builtin.setup:
 
     - name: "Edit /etc/hosts file to add all hosts"
-      loop: "{{ groups['all'] }}"
+      loop: "{{ groups['local'] }}"
       loop_control:
         loop_var: host
       register: output
@@ -60,14 +60,14 @@
         loop_var: bundle
       when: inv_cert_bundles is defined
       vars:
-        add_certificates_bundle_name: "{{ bundle.name }}"
-        add_certificates_bundle_type: "{{ bundle.type }}"
-        add_certificates_bundle_src: "{{ bundle.src }}"
-        add_certificates_bundle_dest: "{{ bundle.dest }}"
-        #add_certificates_bundle_src_user: "{{ bundle.src_user }}"
-        #add_certificates_bundle_src_password: "{{ bundle.src_password }}"
-        #add_certificates_bundle_dest_user: "{{ bundle.dest_user }}"
-        #add_certificates_bundle_dest_group: "{{ bundle.dest_group }}"
-        #add_certificates_bundle_dest_mode: "{{ bundle.dest_mode }}"
+        add_certificates__bundle_name: "{{ bundle.name }}"
+        add_certificates__bundle_type: "{{ bundle.type }}"
+        add_certificates__bundle_src: "{{ bundle.src }}"
+        add_certificates__bundle_dest: "{{ bundle.dest }}"
+        #add_certificates__bundle_src_user: "{{ bundle.src_user }}"
+        #add_certificates__bundle_src_password: "{{ bundle.src_password }}"
+        add_certificates__bundle_dest_user: "{{ bundle.dest_user }}"
+        add_certificates__bundle_dest_group: "{{ bundle.dest_group }}"
+        add_certificates__bundle_dest_mode: "{{ bundle.dest_mode }}"
       ansible.builtin.include_role:
         name: "labocbz.add_certificates"
