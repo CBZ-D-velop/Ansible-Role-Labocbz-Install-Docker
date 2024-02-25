@@ -115,39 +115,39 @@ Some vars a required to run this role:
 
 ```YAML
 ---
-install_docker_compose_version: "2.17.2"
+install_docker__compose_version: "2.17.2"
 
-install_docker_disable_swap: false
+install_docker__disable_swap: false
 
-#install_docker_insecure_registries:
+#install_docker__insecure_registries:
 #  - http://your.personnal.registrie:5049
 #  - http://your.personnal.registrie:5050
 
-install_docker_portainer: true
-install_docker_portainer_http_port: 9000
-install_docker_portainer_https_port: 9443
-install_docker_portainer_agent_port: 8000
-install_docker_portainer_address: "0.0.0.0"
-install_docker_portainer_container_name: "portainer-ce"
-install_docker_portainer_volume_name: "portainer_data"
-install_docker_portainer_ssl: true
-install_docker_portainer_ssl_path: "/etc/certs"
-install_docker_portainer_ssl_cert: "{{ install_docker_portainer_ssl_path }}/mycert.crt"
-install_docker_portainer_ssl_key: "{{ install_docker_portainer_ssl_path }}/mykey.key"
+install_docker__portainer: true
+install_docker__portainer_http_port: 9000
+install_docker__portainer_https_port: 9443
+install_docker__portainer_agent_port: 8000
+install_docker__portainer_address: "0.0.0.0"
+install_docker__portainer_container_name: "portainer-ce"
+install_docker__portainer_volume_name: "portainer_data"
+install_docker__portainer_ssl: true
+install_docker__portainer_ssl_path: "/etc/certs"
+install_docker__portainer_ssl_cert: "{{ install_docker__portainer_ssl_path }}/mycert.crt"
+install_docker__portainer_ssl_key: "{{ install_docker__portainer_ssl_path }}/mykey.key"
 
-install_docker_watchtower: true
-install_docker_watchtower_container_name: "watchtower"
-install_docker_watchtower_poll_interval: 3600
-install_docker_watchtower_cleanup: true
-install_docker_watchtower_include_restarting: true
-install_docker_watchtower_include_stopped: true
-install_docker_watchtower_no_restart: true
+install_docker__watchtower: true
+install_docker__watchtower_container_name: "watchtower"
+install_docker__watchtower_poll_interval: 3600
+install_docker__watchtower_cleanup: true
+install_docker__watchtower_include_restarting: true
+install_docker__watchtower_include_stopped: true
+install_docker__watchtower_no_restart: true
 
-install_docker_handle_clean: true
-install_docker_clean_cron_file: "ansible_docker_system_prune"
-install_docker_clean_weekday: "*"
-install_docker_clean_minute: "*"
-install_docker_clean_hour: "*/8"
+install_docker__handle_clean: true
+install_docker__clean_cron_file: "ansible_docker_system_prune"
+install_docker__clean_weekday: "*"
+install_docker__clean_minute: "*"
+install_docker__clean_hour: "*/8"
 
 ```
 
@@ -160,39 +160,39 @@ In order to surchage vars, you have multiples possibilities but for mains cases 
 ```YAML
 # From inventory
 ---
-inv_install_docker_compose_version: "2.17.2"
+inv_install_docker__compose_version: "2.17.2"
 
-inv_install_docker_disable_swap: true
+inv_install_docker__disable_swap: true
 
-#inv_install_docker_insecure_registries:
+#inv_install_docker__insecure_registries:
 #  - http://your.personnal.registrie:5049
 #  - http://your.personnal.registrie:5050
 
-inv_install_docker_portainer: true
-inv_install_docker_portainer_http_port: 9001
-inv_install_docker_portainer_https_port: 9444
-inv_install_docker_portainer_agent_port: 8001
-inv_install_docker_portainer_address: "127.0.0.1"
-inv_install_docker_portainer_container_name: "portainer-ce"
-inv_install_docker_portainer_volume_name: "portainer_data"
-inv_install_docker_portainer_ssl: true
-inv_install_docker_portainer_ssl_path: "/etc/docker/ssl/portainer"
-inv_install_docker_portainer_ssl_cert: "{{ inv_install_docker_portainer_ssl_path }}/my-portainer.domain.tld/my-portainer.domain.tld.pem.crt"
-inv_install_docker_portainer_ssl_key: "{{ inv_install_docker_portainer_ssl_path }}/my-portainer.domain.tld/my-portainer.domain.tld.pem.key"
+inv_install_docker__portainer: true
+inv_install_docker__portainer_http_port: 9000
+inv_install_docker__portainer_https_port: 9443
+inv_install_docker__portainer_agent_port: 8000
+inv_install_docker__portainer_address: "127.0.0.1"
+inv_install_docker__portainer_container_name: "portainer-ce"
+inv_install_docker__portainer_volume_name: "portainer_data"
+inv_install_docker__portainer_ssl: true
+inv_install_docker__portainer_ssl_path: "/etc/docker/ssl/portainer"
+inv_install_docker__portainer_ssl_cert: "{{ inv_install_docker__portainer_ssl_path }}/my-portainer-server.domain.tld/my-portainer-server.domain.tld.pem.crt"
+inv_install_docker__portainer_ssl_key: "{{ inv_install_docker__portainer_ssl_path }}/my-portainer-server.domain.tld/my-portainer-server.domain.tld.pem.key"
 
-inv_install_docker_watchtower: false
-inv_install_docker_watchtower_container_name: "watchtower"
-inv_install_docker_watchtower_poll_interval: 3600
-inv_install_docker_watchtower_cleanup: true
-inv_install_docker_watchtower_include_restarting: true
-inv_install_docker_watchtower_include_stopped: true
-inv_install_docker_watchtower_no_restart: true
+inv_install_docker__watchtower: true
+inv_install_docker__watchtower_container_name: "watchtower"
+inv_install_docker__watchtower_poll_interval: 3600
+inv_install_docker__watchtower_cleanup: true
+inv_install_docker__watchtower_include_restarting: true
+inv_install_docker__watchtower_include_stopped: true
+inv_install_docker__watchtower_no_restart: true
 
-inv_install_docker_handle_clean: true
-inv_install_docker_clean_cron_file: "ansible_docker_system_prune"
-inv_install_docker_clean_weekday: "*"
-inv_install_docker_clean_minute: "*"
-inv_install_docker_clean_hour: "*/8"
+inv_install_docker__handle_clean: true
+inv_install_docker__clean_cron_file: "ansible_docker_system_prune"
+inv_install_docker__clean_weekday: "*"
+inv_install_docker__clean_minute: "*"
+inv_install_docker__clean_hour: "*/8"
 ```
 
 ```YAML
@@ -210,28 +210,28 @@ To run this role, you can copy the molecule/default/converge.yml playbook and ad
   tags:
     - "labocbz.install_docker"
   vars:
-    install_docker_portainer: "{{ inv_install_docker_portainer }}"
-    install_docker_portainer_http_port: "{{ inv_install_docker_portainer_http_port }}"
-    install_docker_portainer_https_port: "{{ inv_install_docker_portainer_https_port }}"
-    install_docker_portainer_agent_port: "{{ inv_install_docker_portainer_agent_port }}"
-    install_docker_portainer_container_name: "{{ inv_install_docker_portainer_container_name }}"
-    install_docker_portainer_volume_name: "{{ inv_install_docker_portainer_volume_name }}"
-    install_docker_portainer_ssl: "{{ inv_install_docker_portainer_ssl }}"
-    install_docker_portainer_ssl_volume_name: "{{ inv_install_docker_portainer_ssl_volume_name }}"
-    install_docker_portainer_ssl_key: "{{ inv_install_docker_portainer_ssl_cert }}"
-    install_docker_watchtower: "{{ inv_install_docker_watchtower }}"
-    install_docker_watchtower_poll_interval: "{{ inv_install_docker_watchtower_poll_interval }}"
-    install_docker_watchtower_cleanup: "{{ inv_install_docker_watchtower_cleanup }}"
-    install_docker_watchtower_include_restarting: "{{ inv_install_docker_watchtower_include_restarting }}"
-    install_docker_watchtower_include_stopped: "{{ inv_install_docker_watchtower_include_stopped }}"
-    install_docker_watchtower_no_restart: "{{ inv_install_docker_watchtower_no_restart }}"
-    install_docker_portainer_address: "{{ inv_install_docker_portainer_address }}"
-    install_docker_handle_clean: "{{ inv_install_docker_handle_clean }}"
-    install_docker_clean_cron_file: "{{ inv_install_docker_clean_cron_file }}"
-    install_docker_clean_weekday: "{{ inv_install_docker_clean_weekday }}"
-    install_docker_clean_minute: "{{ inv_install_docker_clean_minute }}"
-    install_docker_clean_hour: "{{ inv_install_docker_clean_hour }}"
-    install_docker_disable_swap: "{{ inv_install_docker_disable_swap }}
+    install_docker__portainer: "{{ inv_install_docker__portainer }}"
+    install_docker__portainer_http_port: "{{ inv_install_docker__portainer_http_port }}"
+    install_docker__portainer_https_port: "{{ inv_install_docker__portainer_https_port }}"
+    install_docker__portainer_agent_port: "{{ inv_install_docker__portainer_agent_port }}"
+    install_docker__portainer_container_name: "{{ inv_install_docker__portainer_container_name }}"
+    install_docker__portainer_volume_name: "{{ inv_install_docker__portainer_volume_name }}"
+    install_docker__portainer_ssl: "{{ inv_install_docker__portainer_ssl }}"
+    install_docker__portainer_ssl_volume_name: "{{ inv_install_docker__portainer_ssl_volume_name }}"
+    install_docker__portainer_ssl_key: "{{ inv_install_docker__portainer_ssl_cert }}"
+    install_docker__watchtower: "{{ inv_install_docker__watchtower }}"
+    install_docker__watchtower_poll_interval: "{{ inv_install_docker__watchtower_poll_interval }}"
+    install_docker__watchtower_cleanup: "{{ inv_install_docker__watchtower_cleanup }}"
+    install_docker__watchtower_include_restarting: "{{ inv_install_docker__watchtower_include_restarting }}"
+    install_docker__watchtower_include_stopped: "{{ inv_install_docker__watchtower_include_stopped }}"
+    install_docker__watchtower_no_restart: "{{ inv_install_docker__watchtower_no_restart }}"
+    install_docker__portainer_address: "{{ inv_install_docker__portainer_address }}"
+    install_docker__handle_clean: "{{ inv_install_docker__handle_clean }}"
+    install_docker__clean_cron_file: "{{ inv_install_docker__clean_cron_file }}"
+    install_docker__clean_weekday: "{{ inv_install_docker__clean_weekday }}"
+    install_docker__clean_minute: "{{ inv_install_docker__clean_minute }}"
+    install_docker__clean_hour: "{{ inv_install_docker__clean_hour }}"
+    install_docker__disable_swap: "{{ inv_install_docker__disable_swap }}"
   ansible.builtin.include_role:
     name: "labocbz.install_docker"
 ```
@@ -287,6 +287,12 @@ Here you can put your change to keep a trace of your work and decisions.
 
 * You can now disable your SWAP or enable it with this role
 * SWAP disabing is based on cron task at boot
+
+### 2024-02-24: Fix and CI
+
+* Added support for new CI base
+* Edit all vars with __
+* Tested and validated on Docker DIND
 
 ## Authors
 

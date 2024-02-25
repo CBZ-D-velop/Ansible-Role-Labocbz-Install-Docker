@@ -1,35 +1,35 @@
 ---
-install_docker_compose_version: "2.17.2"
+install_docker__compose_version: "2.17.2"
 
-install_docker_disable_swap: true
+install_docker__disable_swap: true
 
-#install_docker_insecure_registries:
+#install_docker__insecure_registries:
 #  - http://your.personnal.registrie:5049
 #  - http://your.personnal.registrie:5050
 
-install_docker_portainer: true
-install_docker_portainer_http_port: 9000
-install_docker_portainer_https_port: 9443
-install_docker_portainer_agent_port: 8000
-install_docker_portainer_address: "0.0.0.0"
-install_docker_portainer_container_name: "portainer-ce"
-install_docker_portainer_volume_name: "portainer_data"
-install_docker_portainer_ssl: true
-install_docker_portainer_ssl_path: "/etc/certs"
-install_docker_portainer_ssl_cert: "{{ install_docker_portainer_ssl_path }}/mycert.crt"
-install_docker_portainer_ssl_key: "{{ install_docker_portainer_ssl_path }}/mykey.key"
+install_docker__portainer: true
+install_docker__portainer_http_port: 9000
+install_docker__portainer_https_port: 9443
+install_docker__portainer_agent_port: 8000
+install_docker__portainer_address: "0.0.0.0"
+install_docker__portainer_container_name: "portainer-ce"
+install_docker__portainer_volume_name: "portainer_data"
+install_docker__portainer_ssl: true
+install_docker__portainer_ssl_path: "/etc/certs"
+install_docker__portainer_ssl_cert: "{{ install_docker__portainer_ssl_path }}/mycert.crt"
+install_docker__portainer_ssl_key: "{{ install_docker__portainer_ssl_path }}/mykey.key"
 
-install_docker_watchtower: true
-install_docker_watchtower_container_name: "watchtower"
-install_docker_watchtower_poll_interval: 3600
-install_docker_watchtower_cleanup: true
-install_docker_watchtower_include_restarting: true
-install_docker_watchtower_include_stopped: true
-install_docker_watchtower_no_restart: true
+install_docker__watchtower: true
+install_docker__watchtower_container_name: "watchtower"
+install_docker__watchtower_poll_interval: 3600
+install_docker__watchtower_cleanup: true
+install_docker__watchtower_include_restarting: true
+install_docker__watchtower_include_stopped: true
+install_docker__watchtower_no_restart: true
 
-install_docker_handle_clean: true
+install_docker__handle_clean: true
 
-install_docker_clean_cron_file: "ansible_docker_system_prune"
-install_docker_clean_weekday: "*"
-install_docker_clean_minute: "*"
-install_docker_clean_hour: "*/8"
+install_docker__clean_cron_file: "ansible_docker_system_prune"
+install_docker__clean_weekday: "*"
+install_docker__clean_minute: "*"
+install_docker__clean_hour: "*/8"

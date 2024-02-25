@@ -13,9 +13,9 @@ inv_cert_bundles:
     type: "CA"
     src: "/tmp/My-Local-Ansible-Intermediate-CA-2.pem.crt"
 
-  - name: "my-portainer.domain.tld"
+  - name: "my-portainer-server.domain.tld"
     type: "cert"
-    src: "/tmp/my-portainer.domain.tld.zip"
+    src: "/tmp/my-portainer-server.domain.tld.zip"
     dest: "/etc/docker/ssl/portainer"
     #src_user: "myUser"
     #src_password: "secretPassword"

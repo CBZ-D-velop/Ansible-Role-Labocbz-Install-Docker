@@ -1,15 +1,15 @@
 ---
 - name: "Add custom / insecure registries"
-  when: install_docker_insecure_registries | default(false)
+  when: install_docker__insecure_registries | default(false)
   notify: "Restart Docker"
   block:
       - name: "Check if /etc/docker exist"
-        register: install_docker_folder
+        register: install_docker__folder
         ansible.builtin.stat:
           path: "/etc/docker"
 
       - name: "Create /etc/docker directory"
-        when: not install_docker_folder.stat.exists
+        when: not install_docker__folder.stat.exists
         ansible.builtin.file:
           path: "/etc/docker"
           state: directory
@@ -23,14 +23,15 @@
 
 - name: "Install Docker"
   notify: "Enable and start Docker"
+  when: ansible_distribution == "Ubuntu" or ansible_distribution == "Debian"
   block:
   - name: "Add Docker GPG apt Key"
     ansible.builtin.apt_key:
-      url: "https://download.docker.com/linux/{{ ansible_os_family | lower }}/gpg"
+      url: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
 
   - name: "Add Docker Repository"
     ansible.builtin.apt_repository:
-      repo: "deb [arch=amd64] https://download.docker.com/linux/{{ ansible_os_family | lower }} {{ ansible_distribution_release | lower }} stable"
+      repo: "deb [arch=amd64] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }} stable"
 
   - name: "Update apt and install docker-ce"
     ansible.builtin.apt:
@@ -40,50 +41,50 @@
 
 - name: "Install Docker-Compose"
   ansible.builtin.get_url:
-    url: "https://github.com/docker/compose/releases/download/v{{ install_docker_compose_version }}/docker-compose-{{ ansible_system }}-{{ ansible_machine }}"
+    url: "https://github.com/docker/compose/releases/download/v{{ install_docker__compose_version }}/docker-compose-{{ ansible_system }}-{{ ansible_machine }}"
     dest: "/usr/local/bin/docker-compose"
     mode: 'a+x'
 
 - name: "Install Portainer (no SSL)"
-  when: (install_docker_portainer | default(false)) and not (install_docker_portainer_ssl | default(false))
+  when: (install_docker__portainer | default(false)) and not (install_docker__portainer_ssl | default(false))
   community.docker.docker_container:
-    name: "{{ install_docker_portainer_container_name }}"
+    name: "{{ install_docker__portainer_container_name }}"
     image: "portainer/portainer-ce"
     state: "present"
     recreate: false
     restart_policy: "always"
     ports:
-      - "{{ install_docker_portainer_address }}:{{ install_docker_portainer_http_port }}:9000"
-      - "{{ install_docker_portainer_address }}:{{ install_docker_portainer_https_port }}:9443"
+      - "{{ install_docker__portainer_address }}:{{ install_docker__portainer_http_port }}:9000"
+      - "{{ install_docker__portainer_address }}:{{ install_docker__portainer_https_port }}:9443"
       - "0.0.0.0:8000:8000"
     volumes:
-      - "{{ install_docker_portainer_volume_name }}:/data"
+      - "{{ install_docker__portainer_volume_name }}:/data"
       - "/var/run/docker.sock:/var/run/docker.sock"
 
 - name: "Install Portainer (SSL)"
-  when: (install_docker_portainer | default(false)) and (install_docker_portainer_ssl | default(false))
+  when: (install_docker__portainer | default(false)) and (install_docker__portainer_ssl | default(false))
   community.docker.docker_container:
-    name: "{{ install_docker_portainer_container_name }}"
+    name: "{{ install_docker__portainer_container_name }}"
     image: "portainer/portainer-ce"
     state: "started"
     recreate: false
     restart_policy: "always"
     ports:
-      - "{{ install_docker_portainer_address }}:{{ install_docker_portainer_http_port }}:9000"
-      - "{{ install_docker_portainer_address }}:{{ install_docker_portainer_https_port }}:9443"
+      - "{{ install_docker__portainer_address }}:{{ install_docker__portainer_http_port }}:9000"
+      - "{{ install_docker__portainer_address }}:{{ install_docker__portainer_https_port }}:9443"
       - "0.0.0.0:8000:8000"
     volumes:
-      - "{{ install_docker_portainer_volume_name }}:/data"
+      - "{{ install_docker__portainer_volume_name }}:/data"
       - "/var/run/docker.sock:/var/run/docker.sock"
-      - "{{ install_docker_portainer_ssl_path }}:/certs"
+      - "{{ install_docker__portainer_ssl_path }}:/certs"
     env:
-      sslcert: "{{ install_docker_portainer_ssl_cert }}"
-      sslkey: "{{ install_docker_portainer_ssl_key }}"
+      sslcert: "{{ install_docker__portainer_ssl_cert }}"
+      sslkey: "{{ install_docker__portainer_ssl_key }}"
 
 - name: "Install Watchtower"
-  when: install_docker_watchtower | default(false)
+  when: install_docker__watchtower | default(false)
   community.docker.docker_container:
-    name: "{{ install_docker_watchtower_container_name }}"
+    name: "{{ install_docker__watchtower_container_name }}"
     image: "containrrr/watchtower"
     state: "started"
     recreate: false
@@ -91,14 +92,14 @@
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
     env:
-      WATCHTOWER_POLL_INTERVAL: "{{ install_docker_watchtower_poll_interval }}"
-      WATCHTOWER_CLEANUP: "{{ install_docker_watchtower_cleanup }}"
-      WATCHTOWER_INCLUDE_RESTARTING: "{{ install_docker_watchtower_include_restarting }}"
-      WATCHTOWER_INCLUDE_STOPPED: "{{ install_docker_watchtower_include_stopped }}"
-      WATCHTOWER_NO_RESTART: "{{ install_docker_watchtower_no_restart }}"
+      WATCHTOWER_POLL_INTERVAL: "{{ install_docker__watchtower_poll_interval }}"
+      WATCHTOWER_CLEANUP: "{{ install_docker__watchtower_cleanup | lower }}"
+      WATCHTOWER_INCLUDE_RESTARTING: "{{ install_docker__watchtower_include_restarting | lower }}"
+      WATCHTOWER_INCLUDE_STOPPED: "{{ install_docker__watchtower_include_stopped | lower }}"
+      WATCHTOWER_NO_RESTART: "{{ install_docker__watchtower_no_restart | lower }}"
 
 - name: "Handler Docker clean"
-  when: install_docker_handle_clean | default(false)
+  when: install_docker__handle_clean | default(false) and (ansible_distribution == "Ubuntu" or ansible_distribution == "Debian")
   block:
     - name: "Set facts for cleaning job"
       ansible.builtin.set_fact:
@@ -119,7 +120,7 @@
         state: present
 
 - name: "Handler Docker No clean"
-  when: not (install_docker_handle_clean | default(false))
+  when: not (install_docker__handle_clean | default(false) and (ansible_distribution == "Ubuntu" or ansible_distribution == "Debian"))
   block:
     - name: "Set facts for cleaning job"
       ansible.builtin.set_fact:
@@ -132,7 +133,7 @@
         state: absent
 
 - name: "Disable SWAP and add cron"
-  when: install_docker_disable_swap | default(true)
+  when: install_docker__disable_swap | default(true) and (ansible_distribution == "Ubuntu" or ansible_distribution == "Debian")
   block:
     - name: "Disable SWAP"
       register: ouput
@@ -149,7 +150,7 @@
         cron_file: "ansible_disable_swap_after_boot"
 
 - name: "Enable SWAP and remove cron"
-  when: not (install_docker_disable_swap | default(true))
+  when: not (install_docker__disable_swap | default(true) and (ansible_distribution == "Ubuntu" or ansible_distribution == "Debian"))
   block:
     - name: "Enable SWAP"
       register: ouput
