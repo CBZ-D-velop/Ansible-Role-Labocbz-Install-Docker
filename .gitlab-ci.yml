@@ -118,7 +118,7 @@ ansible_lint:
 #  rules:
 #    - if: '$CI_COMMIT_MESSAGE=~/^[^Merge]/ && $CI_COMMIT_BRANCH == "develop"'
 
-molecule_test_debian_12:
+molecule_test_docker_dind:
   <<: *molecule_test
   variables:
     SCENARIO: "cicd-docker-dind"
