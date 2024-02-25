@@ -293,7 +293,7 @@ Here you can put your change to keep a trace of your work and decisions.
 * Added support for new CI base
 * Edit all vars with __
 * Tested and validated on Docker DIND
-* Removed docker socket local
+* Removed docker socket local and port
 
 ## Authors
 
