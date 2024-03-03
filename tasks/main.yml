@@ -45,6 +45,9 @@
     dest: "/usr/local/bin/docker-compose"
     mode: 'a+x'
 
+- name: "Flush handlers, and start Docker"
+  ansible.builtin.meta: flush_handlers
+
 - name: "Install Portainer (no SSL)"
   when: (install_docker__portainer | default(false)) and not (install_docker__portainer_ssl | default(false))
   community.docker.docker_container:
