@@ -295,6 +295,14 @@ Here you can put your change to keep a trace of your work and decisions.
 * Tested and validated on Docker DIND
 * Removed docker socket local and port
 
+### 2024-05-19: New CI
+
+* Added Markdown lint to the CICD
+* Rework all Docker images
+* Change CICD vars convention
+* New workers
+* Removed all automation based on branch
+
 ## Authors
 
 * Lord Robin Crombez
