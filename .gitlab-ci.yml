@@ -39,7 +39,7 @@ variables:
 #################### EXTENDABLES
 ###############################################################################
 
-.molecule:test: &molecule:test
+.molecule_test: &molecule_test
   image: $NEXUS_DOCKER_GROUP_REGISTRY/$DOCKER_IMAGE__RUN_ANSIBLE_MOLECULE
   stage: molecule
   before_script:
@@ -109,21 +109,21 @@ lint:markdown:
     - if: '$CI_COMMIT_MESSAGE=~/^[^Merge]/ && $CI_COMMIT_BRANCH == "develop"'
 
 #molecule:test-debian-12:
-#  <<: *molecule:test
+#  <<: *molecule_test
 #  variables:
 #    SCENARIO: "cicd-debian-12"
 #  rules:
 #    - if: '$CI_COMMIT_MESSAGE=~/^[^Merge]/ && $CI_COMMIT_BRANCH == "develop"'
 
 molecule:test-docker-dind:
-  <<: *molecule:test
+  <<: *molecule_test
   variables:
     SCENARIO: "cicd-docker-dind"
   rules:
     - if: '$CI_COMMIT_MESSAGE=~/^[^Merge]/ && $CI_COMMIT_BRANCH == "develop"'
 
 #molecule:test-ubuntu-22:
-#  <<: *molecule:test
+#  <<: *molecule_test
 #  variables:
 #    SCENARIO: "cicd-ubuntu-22"
 #  allow_failure: true
@@ -131,7 +131,7 @@ molecule:test-docker-dind:
 #    - if: '$CI_COMMIT_MESSAGE=~/^[^Merge]/ && $CI_COMMIT_BRANCH == "develop"'
 
 #molecule:test-debian-11:
-#  <<: *molecule:test
+#  <<: *molecule_test
 #  variables:
 #    SCENARIO: "cicd-debian-11"
 #  allow_failure: true
