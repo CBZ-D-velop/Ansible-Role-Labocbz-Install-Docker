@@ -39,7 +39,7 @@ variables:
 #################### EXTENDABLES
 ###############################################################################
 
-.molecule_test: &molecule_test
+.molecule:test: &molecule:test
   image: $NEXUS_DOCKER_GROUP_REGISTRY/$DOCKER_IMAGE__RUN_ANSIBLE_MOLECULE
   stage: molecule
   before_script:
@@ -48,7 +48,6 @@ variables:
     - "docker login -u \"$GITLAB_CI_NEXUS_CREDENTIALS_USR\" -p \"$GITLAB_CI_NEXUS_CREDENTIALS_PSW\" \"http://$NEXUS_DOCKER_GROUP_REGISTRY\""
     - "python3 -m compileall /usr/lib/python3 -qq"
     - "cp ./.ansible.cfg /root/.ansible.cfg"
-
     - "[ -f \"./molecule/$SCENARIO/requirements.yml\" ] && ansible-galaxy install -r ./molecule/$SCENARIO/requirements.yml --roles-path=./molecule/$SCENARIO/roles"
   script:
     - "molecule test --scenario-name $SCENARIO"
@@ -74,7 +73,6 @@ include:
 lint:yaml:
   stage: lint
   image: $NEXUS_DOCKER_GROUP_REGISTRY/$DOCKER_IMAGE__LINT_YAML
-
   script:
     - yamllint --list-files ./
     - yamllint -c ./.yamllint ./
@@ -85,7 +83,6 @@ lint:yaml:
 lint:jinja:
   stage: lint
   image: $NEXUS_DOCKER_GROUP_REGISTRY/$DOCKER_IMAGE__LINT_JINJA
-
   script:
     - "[ -n \"$(find ./templates -name '*.j2')\" ] && j2lint ./templates/*.j2 --ignore S3 S7"
   allow_failure: false
@@ -95,7 +92,6 @@ lint:jinja:
 lint:ansible:
   stage: lint
   image: $NEXUS_DOCKER_GROUP_REGISTRY/$DOCKER_IMAGE__LINT_ANSIBLE
-
   script:
     - ansible-lint --config=./.ansible-lint --exclude molecule --exclude tests ./*
   allow_failure: false
@@ -113,21 +109,21 @@ lint:markdown:
     - if: '$CI_COMMIT_MESSAGE=~/^[^Merge]/ && $CI_COMMIT_BRANCH == "develop"'
 
 #molecule:test-debian-12:
-#  <<: *molecule_test
+#  <<: *molecule:test
 #  variables:
 #    SCENARIO: "cicd-debian-12"
 #  rules:
 #    - if: '$CI_COMMIT_MESSAGE=~/^[^Merge]/ && $CI_COMMIT_BRANCH == "develop"'
 
-molecule_test_docker_dind:
-  <<: *molecule_test
+molecule:test-docker-dind:
+  <<: *molecule:test
   variables:
     SCENARIO: "cicd-docker-dind"
   rules:
     - if: '$CI_COMMIT_MESSAGE=~/^[^Merge]/ && $CI_COMMIT_BRANCH == "develop"'
 
 #molecule:test-ubuntu-22:
-#  <<: *molecule_test
+#  <<: *molecule:test
 #  variables:
 #    SCENARIO: "cicd-ubuntu-22"
 #  allow_failure: true
@@ -135,7 +131,7 @@ molecule_test_docker_dind:
 #    - if: '$CI_COMMIT_MESSAGE=~/^[^Merge]/ && $CI_COMMIT_BRANCH == "develop"'
 
 #molecule:test-debian-11:
-#  <<: *molecule_test
+#  <<: *molecule:test
 #  variables:
 #    SCENARIO: "cicd-debian-11"
 #  allow_failure: true
