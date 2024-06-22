@@ -10,7 +10,7 @@ driver:
 platforms:
   - name: "molecule-local-instance-1-install-docker"
     #image: "labocbz/ansibletest-debian-12:latest"
-    image: "robincbz/docker-dind-ansible:latest"
+    image: "labocbz/ansibletest-docker-dind:latest"
     hostname: "molecule-local-instance-1-install-docker"
     #published_ports:
     #  - "0.0.0.0:9000:9000/tcp"

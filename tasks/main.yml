@@ -15,11 +15,30 @@
           state: directory
           mode: "0600"
 
+      - name: "Hanble custom lib path for Docker"
+        when: install_docker__custom_lib_path is defined
+        block:
+          - name: "Check if custom lib path exist"
+            register: install_docker__folder
+            ansible.builtin.stat:
+              path: "{{ install_docker__custom_lib_path }}"
+
+          - name: "Create custom lib path directory"
+            when: not install_docker__folder.stat.exists
+            ansible.builtin.file:
+              path: "{{ install_docker__custom_lib_path }}"
+              state: directory
+              mode: "0600"
+              group: "root"
+              owner: "root"
+
       - name: "Import custom dameon.json conf"
         ansible.builtin.template:
           src: "templates/daemon.json.j2"
           dest: "/etc/docker/daemon.json"
           mode: "0600"
+          group: "root"
+          owner: "root"
 
 - name: "Install Docker"
   notify: "Enable and start Docker"
@@ -119,7 +138,7 @@
         minute: "{{ var_handle_docker_clean_minute }}"
         hour: "{{ var_handle_docker_clean_hour }}"
         user: "root"
-        job: "docker system prune --all --volumes --force && docker volume prune --all --force > /dev/null 2>&1"
+        job: "docker system prune --all --force && docker volume prune --all --force > /dev/null 2>&1"
         state: present
 
 - name: "Handler Docker No clean"

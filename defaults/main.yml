@@ -2,6 +2,7 @@
 install_docker__compose_version: "2.17.2"
 
 install_docker__disable_swap: true
+install_docker__custom_lib_path: /var/lib/docker
 
 #install_docker__insecure_registries:
 #  - http://your.personnal.registrie:5049
