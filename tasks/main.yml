@@ -18,12 +18,12 @@
       - name: "Hanble custom lib path for Docker"
         when: install_docker__custom_lib_path is defined
         block:
-          - name: "Check if {{ install_docker__custom_lib_path }} exist"
+          - name: "Check if custom lib path exist"
             register: install_docker__folder
             ansible.builtin.stat:
               path: "{{ install_docker__custom_lib_path }}"
 
-          - name: "Create {{ install_docker__custom_lib_path }} directory"
+          - name: "Create custom lib path directory"
             when: not install_docker__folder.stat.exists
             ansible.builtin.file:
               path: "{{ install_docker__custom_lib_path }}"
