@@ -117,6 +117,7 @@ Some vars a required to run this role:
 install_docker__compose_version: "2.17.2"
 
 install_docker__disable_swap: false
+install_docker__custom_lib_path: /var/lib/docker
 
 #install_docker__insecure_registries:
 #  - http://your.personnal.registrie:5049
@@ -162,6 +163,7 @@ In order to surchage vars, you have multiples possibilities but for mains cases 
 inv_install_docker__compose_version: "2.17.2"
 
 inv_install_docker__disable_swap: true
+inv_install_docker__custom_lib_path: /var/lib/docker
 
 #inv_install_docker__insecure_registries:
 #  - http://your.personnal.registrie:5049
@@ -231,6 +233,7 @@ To run this role, you can copy the molecule/default/converge.yml playbook and ad
     install_docker__clean_minute: "{{ inv_install_docker__clean_minute }}"
     install_docker__clean_hour: "{{ inv_install_docker__clean_hour }}"
     install_docker__disable_swap: "{{ inv_install_docker__disable_swap }}"
+    install_docker__custom_lib_path: "{{ inv_install_docker__custom_lib_path }}"
   ansible.builtin.include_role:
     name: "labocbz.install_docker"
 ```
@@ -301,6 +304,11 @@ Here you can put your change to keep a trace of your work and decisions.
 * Change CICD vars convention
 * New workers
 * Removed all automation based on branch
+
+### 2024-06-22: Added custom install
+
+* You can now define where you want to install and use Docker
+* Edit clear command
 
 ## Authors
 

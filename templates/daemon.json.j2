@@ -1,4 +1,7 @@
 {
+{% if install_docker__custom_lib_path | default(false) %}
+"data-root": "{{ install_docker__custom_lib_path }}",
+{% endif %}
 {% if install_docker__insecure_registries | default(false) %}
 "insecure-registries": [
 {% for registry in install_docker__insecure_registries %}
